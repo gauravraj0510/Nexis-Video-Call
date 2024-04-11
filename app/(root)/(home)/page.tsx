@@ -1,10 +1,38 @@
+'use client';
 import MeetingTypeList from '@/components/MeetingTypeList';
+import { useEffect, useState } from 'react';
 
 const Home = () => {
-  const now = new Date();
+  const [time, setTime] = useState('');
+  const [date, setDate] = useState('');
 
-  const time = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-  const date = (new Intl.DateTimeFormat('en-US', { dateStyle: 'full' })).format(now);
+  useEffect(() => {
+    const updateTimeAndDate = () => {
+      const now = new Date();
+      const newTime = now.toLocaleTimeString('en-US', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        timeZone: 'Asia/Kolkata',
+      });
+      const newDate = new Intl.DateTimeFormat('en-US', {
+        dateStyle: 'full',
+        timeZone: 'Asia/Kolkata',
+      }).format(now);
+
+      setTime(newTime);
+      setDate(newDate);
+    };
+
+    // Initialize time and date
+    updateTimeAndDate();
+
+    // Update time every second
+    const intervalId = setInterval(updateTimeAndDate, 1000);
+
+    // Clear interval on unmount
+    return () => clearInterval(intervalId);
+  }, []);
 
   return (
     <section className="flex size-full flex-col gap-5 text-white">
@@ -14,7 +42,10 @@ const Home = () => {
             Experience seamless calls!
           </h2>
           <div className="flex flex-col gap-2">
-            <h1 className="text-4xl font-extrabold lg:text-7xl">{time}</h1>
+            <h1 className="text-4xl font-extrabold lg:text-7xl">
+              {time}{' '}
+              <span className="text-xl font-extrabold lg:text-2xl">IST</span>
+            </h1>
             <p className="text-lg font-medium text-sky-1 lg:text-2xl">{date}</p>
           </div>
         </div>
