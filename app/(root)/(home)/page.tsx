@@ -12,7 +12,6 @@ const Home = () => {
       const newTime = now.toLocaleTimeString('en-US', {
         hour: '2-digit',
         minute: '2-digit',
-        second: '2-digit',
         timeZone: 'Asia/Kolkata',
       });
       const newDate = new Intl.DateTimeFormat('en-US', {
